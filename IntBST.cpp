@@ -8,13 +8,16 @@ IntBST::IntBST() {
     root = nullptr;
 }
 
+
 IntBST::~IntBST() {
     clear(root); // delete the root and everything below
 }
 
+
 IntBST::IntBST(const IntBST &other) {
     root = copy(other.root);
 }
+
 
 IntBST &IntBST::operator=(IntBST &rhs) {
     if (&rhs != this){
@@ -24,17 +27,7 @@ IntBST &IntBST::operator=(IntBST &rhs) {
     return *this;
 }
 
-bool IntBST::has(int key) const {
-    return has(root, key);
-}
-
-void IntBST::add(int newKey) {
-    root = add(root, newKey);
-}
-
-void IntBST::remove(int key) {
-    root = remove(root, key);
-}
+// Lab 4 methods below!!
 
 bool IntBST::empty() const {
     if (root == nullptr) {
@@ -43,12 +36,6 @@ bool IntBST::empty() const {
     return false;
 }
 
-int IntBST::Node::findMax() const { // method of IntBST::Node
-   if (right == nullptr)
-        return key;
-    else
-        return right->findMax();
-}
 
 bool IntBST::Node::isLeaf() const { // also method of IntBST::Node
     if (left == nullptr && right == nullptr){
@@ -57,22 +44,36 @@ bool IntBST::Node::isLeaf() const { // also method of IntBST::Node
     return false;
 }
 
-void IntBST::clear(IntBST::Node *me) {
-    if (me != nullptr) {
-        clear(me->left);
-        clear(me->right);
-        delete me;
-    }
-    // base case is nothing! The implied else - if the next is a nullptr then
-    // we do nothing bc there is nothing to clear!
+
+int IntBST::size() const {
+    return size(root);
+}
+
+// recursive helper!
+int IntBST::size(IntBST::Node *me) {
+    if (me == nullptr)
+        return 0;
+    return 1 + size(me->right) + size(me->left);
 }
 
 
-IntBST::Node *IntBST::copy(IntBST::Node *me) {
-    if (me == nullptr) {
-        return nullptr;
-    }
-    new Node(me->key, copy(me->left), copy(me->right));
+int IntBST::getLeafCount() const {
+    return getLeafCount(root);
+}
+
+// recursive helper!
+int IntBST::getLeafCount(IntBST::Node *me) {
+    if (me == nullptr)
+        return 0;
+    if (me->isLeaf())
+        return 1;
+    return getLeafCount(me->left) + getLeafCount(me->right);
+}
+
+// Lab 4 methods above!!
+
+bool IntBST::has(int key) const {
+    return has(root, key);
 }
 
 bool IntBST::has(IntBST::Node *me, int key) {
@@ -83,8 +84,13 @@ bool IntBST::has(IntBST::Node *me, int key) {
     if (key > me->key)
         return has(me->right, key);
     // key == me->key
-        return true;
+    return true;
 }
+
+void IntBST::add(int newKey) {
+    root = add(root, newKey);
+}
+
 // recursive helper
 IntBST::Node *IntBST::add(IntBST::Node *me, int newKey) {
     if (me == nullptr)
@@ -96,6 +102,11 @@ IntBST::Node *IntBST::add(IntBST::Node *me, int newKey) {
         me->right = add(me->right, newKey);
     // else equal (key already in set) - do nothing
     return me;
+}
+
+
+void IntBST::remove(int key) {
+    root = remove(root, key);
 }
 
 
@@ -128,5 +139,29 @@ IntBST::Node *IntBST::remove(IntBST::Node *me, int key) {
 }
 
 
+int IntBST::Node::findMax() const { // method of IntBST::Node
+   if (right == nullptr)
+        return key;
+    else
+        return right->findMax();
+}
 
+
+void IntBST::clear(IntBST::Node *me) {
+    if (me != nullptr) {
+        clear(me->left);
+        clear(me->right);
+        delete me;
+    }
+    // base case is nothing! The implied else - if the next is a nullptr then
+    // we do nothing bc there is nothing to clear!
+}
+
+
+IntBST::Node *IntBST::copy(IntBST::Node *me) {
+    if (me == nullptr) {
+        return nullptr;
+    }
+    new Node(me->key, copy(me->left), copy(me->right));
+}
 
