@@ -11,10 +11,9 @@ class IntBST {
 public:
     IntBST();
     ~IntBST();
-    IntBST &operator=(IntBST &rhs);
     IntBST(const IntBST &other);
-    // TODO: rest of big 4
-    // FIXME: does the same!
+    IntBST &operator=(IntBST &rhs);
+
 
     bool has(int key) const;
     void add(int newKey);
@@ -35,14 +34,15 @@ private:
         // there is no reason this is a method on the Node rather than on the
         int findMax() const;
 
+    public:
         bool isLeaf() const;
     };
     Node *root;
-    bool has(Node *me, int key) const;
-    Node *add(Node *me, int key);
-    Node *remove(Node *me, int key);
-    Node *copy(Node *me);
-    void clear(Node *me);
+    static bool has(Node *me, int key);
+    static Node *add(Node *me, int key);
+    static Node *remove(Node *me, int key);
+    static Node *copy(Node *me);
+    static void clear(Node *me);
 
 };
 
