@@ -19,6 +19,7 @@ public:
     bool has(int key) const;
     void add(int newKey);
     void remove(int key);
+    bool empty() const;
 
 private:
     struct Node{
@@ -33,6 +34,8 @@ private:
         }
         // there is no reason this is a method on the Node rather than on the
         int findMax() const;
+
+        bool isLeaf() const;
     };
     Node *root;
     bool has(Node *me, int key) const;
